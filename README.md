@@ -4,10 +4,49 @@ Este curso es una introducción al uso de la IA en un entrono empresarial
 
 ### Contenido del curso
 
-ia-para-empresas/README.md
-
 ![image](https://agent-bootcamp.vercel.app/agent.gif)
 
+### ¿Qué aprenderemos en este curso?
+
+En este curso exploraremos un conjunto integrado de tecnologías, librerías y técnicas fundamentales para el desarrollo de aplicaciones inteligentes basadas en agentes de IA y modelos de lenguaje locales. A continuación, se detallan los elementos clave que dominarás, organizados en **tecnologías** y **técnicas**, con una descripción concisa de cada uno.
+
+---
+
+## Tecnologías
+
+### LangChain  
+LangChain es un framework modular diseñado para facilitar la creación de aplicaciones potenciadas por modelos de lenguaje grandes (LLMs). Permite encadenar componentes como prompts, memorias, herramientas externas y agentes, ofreciendo una arquitectura flexible para orquestar flujos complejos de razonamiento. En este curso, lo usaremos como base para construir sistemas que interactúan dinámicamente con datos y servicios, aprovechando su ecosistema para conectar LLMs con fuentes de información estructuradas y no estructuradas.
+
+### LangGraph  
+LangGraph extiende LangChain al permitir definir flujos de trabajo como grafos cíclicos, ideales para implementar agentes con bucles de razonamiento, planificación y auto-corrección. Esta librería es clave para modelar comportamientos avanzados como los de los agentes ReAct, donde el sistema puede iterar entre pensamiento, acción y observación. Aprenderás a diseñar máquinas de estado complejas que simulan toma de decisiones autónoma mediante ciclos controlados y condicionales.
+
+### Pandas  
+Pandas es una librería esencial en ciencia de datos para manipulación y análisis de datos estructurados. En este curso, la utilizaremos principalmente para cargar, transformar y analizar archivos CSV (como `emails.csv`), facilitando tareas como la limpieza de correos electrónicos, extracción de metadatos o preparación de entradas para agentes de IA. Su sintaxis intuitiva y alto rendimiento hacen de pandas una herramienta indispensable para conectar datos del mundo real con pipelines de inteligencia artificial.
+
+### Ollama  
+Ollama es un runtime ligero que permite ejecutar modelos de lenguaje grandes (LLMs) directamente en tu máquina local, sin necesidad de infraestructura en la nube. Soporta una amplia gama de modelos como Llama, Mistral, Gemma, Phi y DeepSeek. Durante el curso, configuraremos Ollama para servir como backend local de inferencia, lo que nos dará control total sobre la privacidad, latencia y costos, además de permitir experimentación offline con modelos de última generación.
+
+### Jupyter Notebooks  
+Jupyter Notebooks es un entorno interactivo basado en celdas que combina código ejecutable, visualizaciones y documentación enriquecida. Todo el material del curso se entrega en este formato (.ipynb), lo que facilita la experimentación paso a paso, la depuración inmediata y la comprensión gradual de conceptos complejos. Aprenderás a navegar, modificar y extender notebooks para prototipar rápidamente soluciones de IA con retroalimentación visual e inmediata.
+
+---
+
+## Técnicas
+
+### Agentes de IA  
+Los agentes de IA son sistemas autónomos capaces de percibir su entorno, razonar sobre él y tomar decisiones para alcanzar objetivos específicos. En este curso, implementaremos agentes que utilizan herramientas externas (como lectura de archivos o APIs), mantienen memoria contextual y ejecutan planes multi-paso. Estos agentes simulan inteligencia proactiva, combinando LLMs con lógica de control para resolver tareas complejas más allá de simples respuestas a prompts.
+
+### Arquitectura ReAct (Reasoning + Acting)  
+La técnica ReAct integra razonamiento (reasoning) y acción (acting) en un ciclo iterativo: el agente piensa, decide una acción, observa el resultado y ajusta su estrategia. Usaremos `create_react_agent` de LangGraph para construir agentes que resuelven problemas mediante esta arquitectura, ideal para tareas que requieren interacción con herramientas externas o exploración secuencial de soluciones. Esta técnica mejora la fiabilidad y transparencia de las decisiones del agente al externalizar su "cadena de pensamiento".
+
+### Uso de Modelos Locales de IA  
+Aprenderás a desplegar, gestionar y utilizar modelos de lenguaje grandes directamente en tu equipo mediante Ollama. Esto incluye seleccionar el modelo adecuado (como `qwen3:7b`), ajustar parámetros de inferencia y evaluar su rendimiento en tareas específicas. El uso de modelos locales garantiza privacidad, reduce dependencia de proveedores externos y permite personalización profunda, habilidades críticas para aplicaciones empresariales o sensibles.
+
+### Integración con MCP (Model Context Protocol)  
+MCP es un protocolo emergente que estandariza cómo los agentes de IA acceden a herramientas y contextos externos. Mediante `langchain_mcp_adapters`, conectaremos nuestros agentes a servicios compatibles con MCP, permitiendo una interoperabilidad limpia y escalable. Esta técnica prepara tus aplicaciones para integrarse con ecosistemas futuros de herramientas de IA, siguiendo estándares abiertos que promueven modularidad y reutilización.
+
+### Manipulación de Datos Estructurados con Pandas  
+Más allá de cargar archivos, profundizaremos en técnicas específicas de transformación de datos tabulares: filtrado, agrupamiento, enriquecimiento y preparación de datasets para consumo por agentes. Por ejemplo, procesaremos listas de correos electrónicos desde `emails.csv` para extraer patrones, generar resúmenes o alimentar sistemas de clasificación. Esta habilidad cierra la brecha entre datos crudos y sistemas inteligentes listos para actuar.
 
 # 1.1 Manual de instalación de Ollama
 
