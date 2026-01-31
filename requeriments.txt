@@ -1,0 +1,7 @@
+mcp
+langchain
+langchain_core
+langchain_mcp_adapters
+langchain_community
+ddgs
+bs4

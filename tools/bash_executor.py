@@ -12,14 +12,15 @@ def execute_bash(command: Annotated[str, "The bash command to execute"],
         # Run the command
         result = subprocess.run(command,shell=True,timeout=timeout,capture_output=True,text=True)
                 
-        return {"command": command,"return code": result.returncode,
+        return {"command": command,"return_code": result.returncode,
             "stdout": result.stdout.strip(),"stderr": result.stderr.strip(),
         }
     except subprocess.TimeoutExpired:
-        return {"command": command,"return code": -1,"stdout": None,
+        return {"command": command,"return_code": -1,"stdout": None,
             "stderr": f"Error executing command: Command timed out after {timeout} seconds",
         }
     except Exception as e:
-        return {"command": command,"return code": -1,"stdout": None,
+        return {"command": command,"return_code": -1,"stdout": None,
             "stderr": f"Error executing command: {str(e)}",
         }
+
