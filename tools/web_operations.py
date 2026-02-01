@@ -98,35 +98,14 @@ def web_search(query: Annotated[str, "search query to look up"],
     except Exception as e:
         return [{"Error": f"{str(e)}"}]
 
-@tool
-def ollama_model() -> Annotated[dict, "JSON response with running models information"]:
-    """Gets the list of running ollama models."""
-    OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:31434')
-    response = requests.get(f"{OLLAMA_HOST}/api/ps")
-    response.raise_for_status()  # Raises an HTTPError for bad responses
-    return response.json()
-
-@tool
-def ollama_model_details(model_name: Annotated[str, "The name of the model to get details for"]) -> Annotated[dict, "JSON response with model details"]:
-    """Gets model details."""
-    OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:31434')
-    response = requests.post(f"{OLLAMA_HOST}/api/show", json={"model": model_name})
-    response.raise_for_status()  # Raises an HTTPError for bad responses
-    return response.json()
-
 if __name__ == "__main__":
 
     import pprint
     pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
 
-    # results = [web_search, scrape_webpages]
     # results = tavily_tool.invoke(input={'query':"langchain local ollama multi-agent deep research system"})  
-    # pp.pprint(web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system'}))
-    pp.pprint(scrape_webpages.invoke(input={'url':'https://discuss.streamlit.io/t/build-a-multi-agent-ai-researcher-using-ollama-langgraph-and-streamlit/116726'}))
     # results = web_scrape.invoke(input={'url':'https://discuss.streamlit.io/t/build-a-multi-agent-ai-researcher-using-ollama-langgraph-and-streamlit/116726'})
-    # pp.pprint(results)
-    # from mcp.server.fastmcp import FastMCP
-    # from langchain_mcp_adapters.tools import to_fastmcp
 
-    # tools=[to_fastmcp(scrape_webpages), to_fastmcp(web_search)]
-    # FastMCP("mcp_web_ops", tools=tools).run(transport="stdio")
+    # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
+    results = scrape_webpages.invoke(input={'url':'https://discuss.streamlit.io/t/build-a-multi-agent-ai-researcher-using-ollama-langgraph-and-streamlit/116726'})
+    pp.pprint(results)
