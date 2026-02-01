@@ -1,7 +1,6 @@
 from typing import Annotated, List, Dict, Any, Optional
 from langchain_core.tools import tool
 import os
-import pprint
 # load environment variables from .env file
 from dotenv import load_dotenv
 load_dotenv()
@@ -11,8 +10,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.documents import Document
 import requests
 from bs4 import BeautifulSoup
-pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
-
+import json
 
 # @tool
 # def web_scrape(url: str, elements: str = "p,h1,h2,h3,h4,h5,code,pre") -> str:
@@ -100,7 +98,26 @@ def web_search(query: Annotated[str, "search query to look up"],
     except Exception as e:
         return [{"Error": f"{str(e)}"}]
 
+@tool
+def ollama_model() -> Annotated[dict, "JSON response with running models information"]:
+    """Gets the list of running ollama models."""
+    OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:31434')
+    response = requests.get(f"{OLLAMA_HOST}/api/ps")
+    response.raise_for_status()  # Raises an HTTPError for bad responses
+    return response.json()
+
+@tool
+def ollama_model_details(model_name: Annotated[str, "The name of the model to get details for"]) -> Annotated[dict, "JSON response with model details"]:
+    """Gets model details."""
+    OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:31434')
+    response = requests.post(f"{OLLAMA_HOST}/api/show", json={"model": model_name})
+    response.raise_for_status()  # Raises an HTTPError for bad responses
+    return response.json()
+
 if __name__ == "__main__":
+
+    import pprint
+    pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
 
     # results = [web_search, scrape_webpages]
     # results = tavily_tool.invoke(input={'query':"langchain local ollama multi-agent deep research system"})  
