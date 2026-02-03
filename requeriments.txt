@@ -3,5 +3,7 @@ langchain
 langchain_core
 langchain_mcp_adapters
 langchain_community
+langchain_ollama
+langfuse
 ddgs
 bs4
