@@ -11,79 +11,31 @@ from langchain_core.documents import Document
 import requests
 from bs4 import BeautifulSoup
 import json
-
-# @tool
-# def web_scrape(url: str, elements: str = "p,h1,h2,h3,h4,h5,code,pre") -> str:
-#     """
-#     Scrape the content from a webpage.
-    
-#     Args:
-#         url: The URL of the webpage to scrape
-#         elements: Comma-separated list of HTML elements to extract (default: p,h1,h2,h3,h4,h5,code,pre)
-        
-#     Returns:
-#         Extracted text content from the webpage
-#     """
-#     try:
-#         headers = {
-#             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-#         }
-#         response = requests.get(url, headers=headers, timeout=10)
-#         response.raise_for_status()
-        
-#         soup = BeautifulSoup(response.text, "html.parser")
-        
-#         # Extract text from the specified elements
-#         element_list = elements.split(',')
-#         content = []
-        
-#         for element_type in element_list:
-#             element_type = element_type.strip()
-#             for element in soup.find_all(element_type):
-#                 text = element.get_text().strip()
-#                 if text:
-#                     # Add element type as a prefix for context
-#                     content.append(f"[{element_type}] {text}")
-        
-#         return "\n".join(content)
-#     except Exception as e:
-#         return f"Error scraping {url}: {str(e)}"
-
-
-# @tool
-# def scrape_webpages(urls: Annotated[List[str], "The URLs list of the webpages to scrape"]
-#     ) -> Annotated[List[Document], "Tha page document"]:
-#     """Scrape and read the provided web pages urls for detailed information"""
-#     loader = WebBaseLoader(urls)
-#     docs = loader.load()
-#     for doc in docs:
-#         doc.page_content = doc.page_content.replace('\n'," ")
-#     return docs
-
-
-# @tool
-# def web_search(queries: Annotated[List[str], "list of search queries to look up"], 
-#     num_results: Annotated[Optional[int], "Max search results per query to return (default: 5)"] = 5
-#     ) ->  Annotated[List[Dict[str, str]], "The search results"]:
-#     """A Internet search engine. Useful for when you need to answer questions about current events"""
-#     try:
-#         with DDGS() as ddgs:
-#             results = []
-#             for query in queries:
-#                 results += ddgs.text(query,max_results=num_results, backend='lite')
-#             return results
-#     except Exception as e:
-#         return [{"Error": f"{str(e)}"}]
-
+import re
 
 @tool
-def scrape_webpages(url: Annotated[str, "The URL of the webpage to scrape"]
+def scrape_webpages(url: Annotated[str, "The URL of the webpage to scrape"],
+    extract_links: Annotated[bool, "Whether to extract links from the content"]=False,
+    min_words_per_line: Annotated[int, "Minimum number of words per line to include in the document"] = 5,
     ) -> Annotated[List[Document], "Tha page document"]:
     """Scrape and read the provided web page url for detailed information"""
-    loader = WebBaseLoader(url)
+    loader = WebBaseLoader(url, raise_for_status=True)
     docs = loader.load()
+
+    # def get_root_host(url):
+    #     parsed_url = urlparse(url)
+    #     hostname = parsed_url.hostname
+    #     parts = hostname.split('.')
+    #     # Return the last two parts joined by a dot
+    #     return '.'.join(parts[-2:])
+
+    # internal_host = get_root_host(response.url)     
+
     for doc in docs:
-        doc.page_content = doc.page_content.replace('\n'," ")
+        if extract_links:
+            doc.metadata['links'] = list(set(re.findall(r'https?://(?:[-\w.])+(?:[:\d]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w.])*)?(?:#(?:[\w.])*)?)?', doc.page_content)))
+        text = [line.strip() for line in doc.page_content.split('\n') if len(line.strip().split()) >= min_words_per_line]
+        doc.page_content = '\n'.join(text)        
     return docs
 
 
@@ -103,9 +55,6 @@ if __name__ == "__main__":
     import pprint
     pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
 
-    # results = tavily_tool.invoke(input={'query':"langchain local ollama multi-agent deep research system"})  
-    # results = web_scrape.invoke(input={'url':'https://discuss.streamlit.io/t/build-a-multi-agent-ai-researcher-using-ollama-langgraph-and-streamlit/116726'})
-
     # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
-    results = scrape_webpages.invoke(input={'url':'https://discuss.streamlit.io/t/build-a-multi-agent-ai-researcher-using-ollama-langgraph-and-streamlit/116726'})
+    results = scrape_webpages.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
     pp.pprint(results)
