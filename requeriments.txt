@@ -7,3 +7,5 @@ langchain_ollama
 langfuse
 ddgs
 bs4
+markdownify
+jinja2

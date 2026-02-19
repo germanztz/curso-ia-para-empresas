@@ -1,0 +1,103 @@
+{
+    "name": "R2VybcOhbiBaZWl0eg==",
+    "gender": "Male",
+    "title": "Gestor TIC",
+    "summary": "Gestor de servicios TIC con m\u00e1s de 22 a\u00f1os de experiencia en el sector p\u00fablico y privado. Especializado en proyectos de gesti\u00f3n del cambio corporativo y digitalizaci\u00f3n utilizando metodolog\u00edas \u00e1giles y DevOps. Con formaci\u00f3n en Data Science. L\u00edder de equipo, con habilidades para la resoluci\u00f3n de conflictos, con un enfoque en la transparencia y el trabajo en equipo. Apasionado por el software libre y la IA.",
+    "contact_info": "PGxpPjxhIGhyZWY9Im1haWx0bzpnZXJtYW4uemVpdHpAZ21haWwuY29tIj5nZXJtYW4uemVpdHpAZ21haWwuY29tIDwvYT48L2xpPgo8bGk+PGEgaHJlZj0idGVsOiszNDY0NDQ1NDEwMSI+NjQ0IDQ1NCAxMDE8L2E+IDwvbGk+CjxsaT4wODAzMCwgQmFyY2Vsb25hIDwvbGk+CjxsaT48YSBocmVmPSJodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vZ2VybWFuemVpdHovIj5AbGlua2RpbiA8L2E+PC9saT4KPGxpPjxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS9nZXJtYW56dHoiPkBnaXRodWIgPC9hPjwvbGk+",
+    "cv_languaje": "es",
+    "academic": [
+        "M\u00e1ster en Gesti\u00f3n de Proyectos - IL3-UB (2019)",
+        "Ingenier\u00eda Inform\u00e1tica - UOC (2009)"
+    ],
+    "languages": [
+        "Castellano (Nativo)",
+        "Catal\u00e1n (C2 - Nativo)",
+        "Ingl\u00e9s (C1 - Advanced)",
+        "Franc\u00e9s (B\u00e1sico)"
+    ],
+    "certifications": [
+        "Agile Development - UOM",
+        "Data Science - UOC",
+        "Machine Learning - UOW",
+        "CI/CD & DevOps - UOV",
+        "Cloud Computing - Google",
+        "Developing Cloud - IBM",
+        "Web Development - IBM",
+        "Python for Data Science - IBM"
+    ],
+    "soft_skills": [
+        "Liderazgo",
+        "Negociaci\u00f3n",
+        "Visi\u00f3n estrat\u00e9gica",
+        "Orientaci\u00f3n a objetivos",
+        "Escucha activa",
+        "Mejora continua",
+        "Pensamiento anal\u00edtico",
+        "Soluci\u00f3n de problemas",
+        "Retroactividad y autonom\u00eda",
+        "Soluciones t\u00e9cnicas"
+    ],
+    "experiences": [
+        {
+            "title": "Gerente de operaciones TIC",
+            "location": "en CTTI (2025)",
+            "description": [
+                "Elaboraci\u00f3n de documentaci\u00f3n para licitaciones e identificaci\u00f3n de requisitos t\u00e9cnicos y funcionales.",
+                "Coordinaci\u00f3n de equipos t\u00e9cnicos corporativos y seguimiento de proyectos y servicios.",
+                "Facilitar la comunicaci\u00f3n con proveedores externos para garantizar la calidad y cumplimiento de acuerdos.",
+                "Impulso de la transformaci\u00f3n digital y facilitar la transici\u00f3n a los usuarios hacia nuevas tecnolog\u00edas.",
+                "Gesti\u00f3n de presupuestos y ejecuci\u00f3n de proyectos seg\u00fan el Plan estrat\u00e9gico.",
+                "Evaluaci\u00f3n y mitigaci\u00f3n de riesgos en servicios y proyectos TIC.",
+                "Propuesta y desarrollo de iniciativas de mejora continua.",
+                "Gobernanza operativa para la gesti\u00f3n de recursos y despliegue de servicios.",
+                "Seguimiento operativo, resoluci\u00f3n de incidencias y prevenci\u00f3n de obsolescencia tecnol\u00f3gica."
+            ]
+        },
+        {
+            "title": "Gestor de servicios TIC",
+            "location": "en Barcelona Serveis Municipals (BSM) (2019 + 3 a\u00f1os)",
+            "description": [
+                "Enlace e interlocutor del cliente para entender sus necesidades y garantizar la calidad de los servicios TIC.",
+                "Gesti\u00f3n de los presupuestos, l\u00edneas de coste, inversi\u00f3n y facturaci\u00f3n con herramientas ERP Fenix y SAP.Gesti\u00f3n de contrataci\u00f3n, licitaciones; Gesti\u00f3n de la demanda, supervisi\u00f3n de SLA incidentales y de entrega TIC.",
+                "Gesti\u00f3n de proyectos end-to-end con JIRA y SCRUM, asegurando el cumplimiento de los objetivos estrat\u00e9gicos de la organizaci\u00f3n.",
+                "Ejecuci\u00f3n del ciclo completo, desde el business case hasta la entrega al cliente, pasando por la gesti\u00f3n de riesgos y costes",
+                "Definici\u00f3n de KPI y migraci\u00f3n de informes financieros a PowerBI"
+            ],
+            "projects": [
+                "Realic\u00e9 la digitalizaci\u00f3n de procesos de Grues de Barcelona mediante cajeros teleasistidos, supervis\u00e9 la arquitectura sobre Google CLOUD y lider\u00e9 un equipo de 7 desarrolladores multi-proveedor.",
+                "Implement\u00e9 Inteligencia Artificial en CCTV sobre MILESTONE y AWS.",
+                "Digitalic\u00e9 los procesos de la central de operaciones con Dynamics CRM."
+            ]
+        },
+        {
+            "title": "Arquitecto de sistemas",
+            "location": "en BSM (2016 + 5 a\u00f1os)",
+            "description": [
+                "Dise\u00f1o y aprobaci\u00f3n de soluciones de arquitectura de aplicaciones para optimizaci\u00f3n de rendimiento y costos.",
+                "Identificaci\u00f3n y an\u00e1lisis de procesos y datos de negocio.",
+                "Dise\u00f1o de dashboards con GRAFANA, sistemas de monitorizaci\u00f3n como GRAYLOG para optimizar operaciones.",
+                "Evaluaci\u00f3n de ineficiencias y recomendaci\u00f3n de buenas pr\u00e1cticas y comportamiento \u00f3ptimo del sistema.",
+                "Despliegue de stack DevOps con OPENSHIFT y automatizaci\u00f3n con pipelines CI/CD con JENKINS."
+            ],
+            "projects": [
+                "Proyecto de gesti\u00f3n centralizada de Aparcamientos en CLOUD: dise\u00f1o de arquitectura e implementaci\u00f3n de sistemas modulares para la gesti\u00f3n de 43 aparcamientos integrados en CLOUD AWS basado en DOCKER, microservicios API REST sobre WSO2.",
+                "Proyecto MaaS aplicaci\u00f3n m\u00f3vil SMOU: responsable t\u00e9cnico y coordinaci\u00f3n de equipos de desarrollo con SCRUM; validaci\u00f3n de documentos de arquitectura, asegurando el cumplimiento de est\u00e1ndares."
+            ]
+        },
+        {
+            "title": "Analista funcional",
+            "location": "en ITNow (SII Concatel) (2013 +3 a\u00f1os)",
+            "description": [
+                "Desarrollo de soluciones tecnol\u00f3gicas personalizadas, incluyendo aplicaciones web y sistemas de backend en HTML, CSS, JS, PHP, JAVA.",
+                "An\u00e1lisis de requisitos y entrevistas con clientes para definir requisitos y entregar soluciones alineadas con sus objetivos. Definici\u00f3n de la base de datos con ORACLE SQL."
+            ]
+        },
+        {
+            "title": "Development Team Lead",
+            "location": "T-Systems (2001 + 12 a\u00f1os)",
+            "description": [
+                "dirigiendo un equipo de tres personas. Nuestro objetivo era el desarrollo de software y automatizaciones para el departamento de operaciones. He desarrollado aplicaciones de gesti\u00f3n, herramientas destinadas al mantenimiento de servidores y diversas automatizaciones para la generaci\u00f3n de informes."
+            ]
+        }
+    ]
+}

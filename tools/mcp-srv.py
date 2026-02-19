@@ -15,7 +15,7 @@ tools=[
     to_fastmcp(get_current_time),
     ]
 
-for module in [web_operations, file_operations, bash_operations]:
+for module in [file_operations, bash_operations]:
     for func in dir(module):
         # check if func is a tool method of the module
         if (type(getattr(module, func)).__name__ == 'StructuredTool'):

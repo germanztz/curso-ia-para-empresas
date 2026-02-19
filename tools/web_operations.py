@@ -1,14 +1,12 @@
 from typing import Annotated, List, Dict, Any, Optional
 from langchain_core.tools import tool
 import os
-# load environment variables from .env file
 from dotenv import load_dotenv
 load_dotenv()
 
 from ddgs import DDGS
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.documents import Document
-import requests
 from bs4 import BeautifulSoup
 import json
 import re
@@ -38,23 +36,38 @@ def scrape_webpages(url: Annotated[str, "The URL of the webpage to scrape"],
         doc.page_content = '\n'.join(text)        
     return docs
 
+# from markdownify import markdownify
+# import requests
+
+# @tool
+# def scrape_webpages_markdown(url: Annotated[str, "The URL of the webpage to scrape"],
+#     ) -> Annotated[List[Document], "Tha page document"]:
+#     """Scrape and read the provided web page url for detailed information"""
+#     response = requests.get(url, timeout=10.0, headers={'User-Agent':os.getenv('USER_AGENT')})
+#     response.raise_for_status()
+#     return markdownify(response.text)
+
 
 @tool
 def web_search(query: Annotated[str, "search query to look up"], 
-    num_results: Annotated[Optional[int], "Max search results per query to return (default: 5)"] = 5
+    num_results: Annotated[Optional[int], "Number of results per query to return (default: 5)"] = 5
     ) ->  Annotated[List[Dict[str, str]], "The search results"]:
-    """A Internet search engine. Useful for when you need to answer questions about current events"""
-    try:
-        with DDGS() as ddgs:
-            return ddgs.text(query,max_results=num_results, backend='lite')
-    except Exception as e:
-        return [{"Error": f"{str(e)}"}]
+    """Internet search engine. Useful for when you need to answer questions about current events"""
+
+    return DDGS().text(query, max_results=num_results, backend='lite')
+
 
 if __name__ == "__main__":
 
-    import pprint
-    pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
+    # import pprint
+    # pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
 
-    # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
-    results = scrape_webpages.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
-    pp.pprint(results)
+    # # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
+    # # results = scrape_webpages.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
+    # results = scrape_webpages_markdown.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
+    # print(results)
+    
+    from mcp.server.fastmcp import FastMCP
+    from langchain_mcp_adapters.tools import to_fastmcp
+    FastMCP("Web Operations MCP", tools=[to_fastmcp(scrape_webpages), to_fastmcp(web_search)]).run(transport="stdio")
+
