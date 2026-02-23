@@ -9,3 +9,4 @@ ddgs
 bs4
 markdownify
 jinja2
+pdfkit
