@@ -10,31 +10,70 @@ from langchain_core.documents import Document
 from bs4 import BeautifulSoup
 import json
 import re
+import hashlib
+import pickle
+import time
+
+
+def load_from_cache(url, cache_time):
+    cache_key = hashlib.md5(url.encode()).hexdigest()
+    cache_file = f"/tmp/{cache_key}.tmp"
+    
+    try:
+        if time.time() - os.path.getmtime(cache_file) < cache_time * 3600:
+            with open(cache_file, 'rb') as f:
+                print(f"Webpage loaded from cache {cache_file}")
+                return pickle.load(f)
+    except:
+        pass
+    return None
+
+def store_in_cache(url, docs):
+    cache_key = hashlib.md5(url.encode()).hexdigest()
+    cache_file = f"/tmp/{cache_key}.tmp"
+    
+    try:
+        with open(cache_file, 'wb') as f:
+            pickle.dump(docs, f)
+    except:
+        print(f"Error writing cache {cache_file}")
+    return None
 
 @tool
 def scrape_webpages(url: Annotated[str, "The URL of the webpage to scrape"],
     extract_links: Annotated[bool, "Whether to extract links from the content"]=False,
     min_words_per_line: Annotated[int, "Minimum number of words per line to include in the document"] = 5,
-    ) -> Annotated[List[Document], "Tha page document"]:
+    cache_time: Annotated[int, "cached document expire time in hours, use 0 for disabling the cache"] = 240
+    ) -> Annotated[List[Document], "The page document"]:
     """Scrape and read the provided web page url for detailed information"""
+
+    docs = load_from_cache(url, cache_time)
+    if docs is not None: return docs
+    
+    # Scrape the webpage
     loader = WebBaseLoader(url, raise_for_status=True)
     docs = loader.load()
-
-    # def get_root_host(url):
-    #     parsed_url = urlparse(url)
-    #     hostname = parsed_url.hostname
-    #     parts = hostname.split('.')
-    #     # Return the last two parts joined by a dot
-    #     return '.'.join(parts[-2:])
-
-    # internal_host = get_root_host(response.url)     
-
+    
     for doc in docs:
         if extract_links:
             doc.metadata['links'] = list(set(re.findall(r'https?://(?:[-\w.])+(?:[:\d]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w.])*)?(?:#(?:[\w.])*)?)?', doc.page_content)))
         text = [line.strip() for line in doc.page_content.split('\n') if len(line.strip().split()) >= min_words_per_line]
-        doc.page_content = '\n'.join(text)        
+        doc.page_content = '\n'.join(text)
+        
+    store_in_cache(url, docs)
+        
     return docs
+
+
+# def get_root_host(url):
+#     parsed_url = urlparse(url)
+#     hostname = parsed_url.hostname
+#     parts = hostname.split('.')
+#     # Return the last two parts joined by a dot
+#     return '.'.join(parts[-2:])
+
+# internal_host = get_root_host(response.url)     
+
 
 # from markdownify import markdownify
 # import requests
@@ -62,8 +101,8 @@ if __name__ == "__main__":
     # import pprint
     # pp = pprint.PrettyPrinter(indent=1, width=200, sort_dicts=False)
 
-    # # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
-    # # results = scrape_webpages.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
+    # results = web_search.invoke(input={'query':'langchain local ollama multi-agent deep research system', 'num_results':3})
+    # results = scrape_webpages.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
     # results = scrape_webpages_markdown.invoke(input={'url':'https://en.wikipedia.org/wiki/LangChain'})
     # print(results)
     
