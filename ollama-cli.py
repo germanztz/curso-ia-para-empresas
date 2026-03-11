@@ -44,7 +44,7 @@ def stream_response(client, prompt: str):
     try:
         # Crea el LLM conectado al cliente MCP
         llm = ChatOllama(
-            model="qwen3.3:0.8b",  # ajusta el modelo según tu entorno
+            model="qwen3.5:0.8b",  # ajusta el modelo según tu entorno
             mcp_client=client,
             temperature=0.7,
         )
