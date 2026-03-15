@@ -125,11 +125,11 @@
 
 				<h2> Experiencia Profesional</h2>
 
-				{% for exper in experiences %}
+				{% for exper in jobs %}
 				<h3> {{ exper.title }} <span class="location">{{ exper.location }}</span></h3>
 				<p>
 				{% for desc in exper.description %}
-					{{ desc }}</br>
+					{{ desc.new_description }}</br>
 				{% endfor %}
 				</p>
 				{% endfor %}

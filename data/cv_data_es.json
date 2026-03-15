@@ -37,11 +37,11 @@
         "Retroactividad y autonom\u00eda",
         "Soluciones t\u00e9cnicas"
     ],
-    "experiences": [
+    "jobs": [
         {
             "title": "Gerente de operaciones TIC",
             "location": "en CTTI (2025)",
-            "description": [
+            "tasks": [
                 "Elaboraci\u00f3n de documentaci\u00f3n para licitaciones e identificaci\u00f3n de requisitos t\u00e9cnicos y funcionales.",
                 "Coordinaci\u00f3n de equipos t\u00e9cnicos corporativos y seguimiento de proyectos y servicios.",
                 "Facilitar la comunicaci\u00f3n con proveedores externos para garantizar la calidad y cumplimiento de acuerdos.",
@@ -56,7 +56,7 @@
         {
             "title": "Gestor de servicios TIC",
             "location": "en Barcelona Serveis Municipals (BSM) (2019 + 3 a\u00f1os)",
-            "description": [
+            "tasks": [
                 "Enlace e interlocutor del cliente para entender sus necesidades y garantizar la calidad de los servicios TIC.",
                 "Gesti\u00f3n de los presupuestos, l\u00edneas de coste, inversi\u00f3n y facturaci\u00f3n con herramientas ERP Fenix y SAP.Gesti\u00f3n de contrataci\u00f3n, licitaciones; Gesti\u00f3n de la demanda, supervisi\u00f3n de SLA incidentales y de entrega TIC.",
                 "Gesti\u00f3n de proyectos end-to-end con JIRA y SCRUM, asegurando el cumplimiento de los objetivos estrat\u00e9gicos de la organizaci\u00f3n.",
@@ -72,7 +72,7 @@
         {
             "title": "Arquitecto de sistemas",
             "location": "en BSM (2016 + 5 a\u00f1os)",
-            "description": [
+            "tasks": [
                 "Dise\u00f1o y aprobaci\u00f3n de soluciones de arquitectura de aplicaciones para optimizaci\u00f3n de rendimiento y costos.",
                 "Identificaci\u00f3n y an\u00e1lisis de procesos y datos de negocio.",
                 "Dise\u00f1o de dashboards con GRAFANA, sistemas de monitorizaci\u00f3n como GRAYLOG para optimizar operaciones.",
@@ -87,7 +87,7 @@
         {
             "title": "Analista funcional",
             "location": "en ITNow (SII Concatel) (2013 +3 a\u00f1os)",
-            "description": [
+            "tasks": [
                 "Desarrollo de soluciones tecnol\u00f3gicas personalizadas, incluyendo aplicaciones web y sistemas de backend en HTML, CSS, JS, PHP, JAVA.",
                 "An\u00e1lisis de requisitos y entrevistas con clientes para definir requisitos y entregar soluciones alineadas con sus objetivos. Definici\u00f3n de la base de datos con ORACLE SQL."
             ]
@@ -95,7 +95,7 @@
         {
             "title": "Development Team Lead",
             "location": "T-Systems (2001 + 12 a\u00f1os)",
-            "description": [
+            "tasks": [
                 "dirigiendo un equipo de tres personas. Nuestro objetivo era el desarrollo de software y automatizaciones para el departamento de operaciones. He desarrollado aplicaciones de gesti\u00f3n, herramientas destinadas al mantenimiento de servidores y diversas automatizaciones para la generaci\u00f3n de informes."
             ]
         }
