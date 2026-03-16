@@ -1,4 +1,7 @@
-from odf import opendocument
+import os
+from odf import opendocument, teletype
+from odf.text import P, Span
+from odf.style import Style, TextProperties
 
 class OdtDocument:
 
@@ -18,8 +21,17 @@ class OdtDocument:
         """
         if (file_path == None):
             file_path = self.file_path
-
+        
+        # Create the file if it doesn't exist
+        if not os.path.exists(file_path):
+            # Create parent directories if they don't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # Create empty file
+            with open(file_path, 'w') as f:
+                pass
+        
         self.document.save(file_path)
+        print(f"Document saved to {file_path}")
 
     def get_indexed_elements(self) -> dict[int: opendocument.Element]:
         """
@@ -55,22 +67,24 @@ class OdtDocument:
         Extract text content from the ODT document.
         """
         content_dict = {}
-        index = 0        
+        i = 0        
         # Get all text elements from the document
-        for index, element in self.get_indexed_elements().items():
+        for i, e in self.get_indexed_elements().items():
+            text = teletype.extractText(e)
             try:
-                # Check if element is a paragraph (P) or heading (H)
-                if element.tagName  == 'text:p':
-                    content_dict[index] = str(element)
-                elif element.tagName  ==  'text:h':
-                    level = 4 
-                    try:
-                        level = int(element.attributes.get(('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'outline-level'), '4'))
-                    except:
-                        pass
-                    content_dict[index] = f"{'#'*level} {element}" if markdown else str(element)
-            except Exception as e:
-                print(f"{e} processing element {index}")
+                if e.tagName  == 'text:a':
+                    link = e.attributes.get(('http://www.w3.org/1999/xlink', 'href'), 'unkown')
+                    # If is a A then assume parent is a P and it's index is on -1
+                    content_dict[i-1] = f"[{text}]({link})" if markdown and text  else text
+                elif e.tagName  == 'text:p':
+                    content_dict[i] = f"{text}" if markdown and text  else text
+                elif e.tagName  ==  'text:h':
+                    level = int(e.attributes.get(('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'outline-level'), '4'))
+                    content_dict[i] = f"{'#'*level} {text}" if markdown and text else text
+                elif e.tagName == 'draw:line':
+                    content_dict[i-1] = "---" if markdown else ''
+            except Exception as ex:
+                print(f"{ex} processing element {i}")
 
         return content_dict
 
@@ -79,43 +93,64 @@ class OdtDocument:
 
     def replace(self, indexed_replacements: dict[int: str]):
 
-        for index, element in self.get_indexed_elements().items():
+        for index, element in reversed(list(self.get_indexed_elements().items())):
             try:
                 if index in indexed_replacements:
-                    self.clear(element)
-                    element.addText(indexed_replacements[index])
+                    self._set_text(element, indexed_replacements[index])
+                    # print(f"Updated {index}: {indexed_replacements[index]}")
 
             except Exception as e:
                 print(f"Error {e} processing element {index}")
 
-    def clear(self, element: opendocument.Element ):
+    def _set_text(self, elem, replacement):
+        """
+        Parse a string with **bold** words and add Span elements to a P element
+        
+        Args:
+            elem (P): The paragraph element to modify
+            replacement (str): Text with **bold** words
+        """
+        # Create a style for bold text if it doesn't exist
+        bold_style_exists = False
+        for style in self.document.styles.getElementsByType(Style):
+            if style.getAttribute("name") == "Bold":
+                bold_style_exists = True
+                break
+        
+        # Create bold style if it doesn't exist
+        if not bold_style_exists:
+            bold_style = Style(name="Bold", family="text")
+            bold_props = TextProperties(fontweight="bold")
+            bold_style.addElement(bold_props)
+            self.document.styles.addElement(bold_style)
+        
+        # clear the element childs
         try:
             while True:
-                element.removeChild(element.firstChild)
+                elem.removeChild(elem.firstChild)
         except:
             pass
 
-    # def text_with_links(elem):
-    #     """Genera texto incluyendo enlaces en formato Markdown [texto](href)."""
-    #     result = []
-    #     for child in elem:
-    #         tag_local = child.tag.split("}")[-1]
-    #         if tag_local == "a":
-    #             href = child.attrib.get("{http://www.w3.org/1999/xlink}href", "")
-    #             texto_link = "".join(child.itertext()).strip()
-    #             result.append(f"[{texto_link}]({href})")
-    #         else:
-    #             result.append(text_with_links(child) if child is not None else child.text or "")
-    #     if elem.text:
-    #         result.insert(0, elem.text)
-    #     return "".join(result)
-
+        # Split the text by ** to identify bold sections
+        parts = replacement.split('**')
+        
+        # Process parts - alternating between normal and bold text
+        for i, part in enumerate(parts):
+            if i % 2 == 0:
+                # Normal text
+                if part.strip():  # Only add non-empty text
+                    elem.addElement(Span(text=part))
+            else:
+                # Bold text
+                if part.strip():  # Only add non-empty text
+                    elem.addElement(Span(stylename="Bold", text=part))
+        
 if __name__ == "__main__":
 
-    file_path = "/home/daimler/workspaces/curso-ia-para-empresas/workspace/cv_adapted.odt"
+    file_path = "/home/daimler/workspaces/curso-ia-para-empresas/workspace/cv_original.odt"
     document = OdtDocument(file_path)
 
-    document.replace({16: "jhon.doe@replaced.com",})
+    document.replace({16: "this **is** a **jhon.doe@replaced.com** bold email.",})
     print(document.get_indexed_text()[16])
-    document.save()
+    document.save("/home/daimler/workspaces/curso-ia-para-empresas/workspace/cv_adapted.odt")
     # print("\n".join([f"{index}: {text}" for index, text in document.get_indexed_text().items()]))
