@@ -33,23 +33,24 @@ class OdtDocument:
         self.document.save(file_path)
         print(f"Document saved to {file_path}")
 
-    def _traverse(self, node, callback) -> bool:
+    def _traverse(self, index, node, callback) -> int:
         """
         Iterates between the tree and calls the callback function on every node
         """
         if node is None:
-            return False
+            return -1
             
         # call the callback function passing the node
-        if not callback(node=node):
-            return False
+        if callback(index=index, node=node) == -1:
+            return -1
 
         # Traverse children first (depth-first)
         current_child = node.firstChild
         while current_child is not None:
-            if self._traverse(current_child, callback) == False:
-                break
+            index = self._traverse(index=index+1, node=current_child, callback=callback)
+            if index == -1: break
             current_child = current_child.nextSibling
+        return index
 
     def get_indexed_elements(self) -> dict[int: opendocument.Element]:
         """
@@ -60,16 +61,13 @@ class OdtDocument:
             dict: Dictionary with index as key and node as value
         """
         result = {}
-        index = 0
         
-        def index_nodes(node) -> bool:
-            nonlocal index
+        def index_nodes(index, node) -> int:
             nonlocal result
             result[index] = node
-            index += 1
-            return True
+            return index
 
-        self._traverse(self.document.body, index_nodes)
+        self._traverse(0, self.document.body, index_nodes)
 
         return result
 
@@ -78,11 +76,9 @@ class OdtDocument:
         Extract text content from the ODT document.
         """
         content_dict = {}
-        i = 0        
 
-        def get_text(node) -> bool:
+        def get_text(index, node) -> int:
 
-            nonlocal i
             nonlocal content_dict
             nonlocal markdown
 
@@ -91,24 +87,23 @@ class OdtDocument:
                 if node.tagName  == 'text:a':
                     link = node.attributes.get(('http://www.w3.org/1999/xlink', 'href'), 'unkown')
                     # If is a A then assume parent is a P and it's index is on -1
-                    content_dict[i-1] = f"[{text}]({link})" if markdown and text  else text
+                    content_dict[index-1] = f"[{text}]({link})" if markdown and text  else text
                 elif node.tagName == 'draw:line':
-                    content_dict[i-1] = "---" if markdown else ''
+                    content_dict[index-1] = "---" if markdown else ''
                 elif node.tagName  == 'text:p':
                     if node.parentNode.tagName  == 'text:list-item':
-                        content_dict[i] = f"- {text}" 
+                        content_dict[index] = f"- {text}" 
                     else:
-                        content_dict[i] = f"{text}" if markdown and text  else text
+                        content_dict[index] = f"{text}" if markdown and text else text
                 elif node.tagName  ==  'text:h':
                     level = int(node.attributes.get(('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'outline-level'), '4'))
-                    content_dict[i] = f"{'#'*level} {text}" if markdown and text else text
+                    content_dict[index] = f"{'#'*level} {text}" if markdown and text else text
             except Exception as ex:
-                print(f"{ex} processing element {i}")
+                print(f"{ex} processing element {index}")
 
-            i += 1
-            return True
+            return index
 
-        self._traverse(self.document.body, get_text)
+        self._traverse(0, self.document.body, get_text)
 
         return content_dict
 
@@ -171,10 +166,16 @@ class OdtDocument:
         
 if __name__ == "__main__":
 
-    file_path = "../workspace/cv_original.odt"
+    import json
+    file_path = os.path.dirname(os.path.abspath(__file__))+"/../workspace/cv_original.odt"
     document = OdtDocument(file_path)
 
     # document.replace({16: "this **is** a **jhon.doe@replaced.com** bold email.",})
     # print(document.get_indexed_text()[16])
     # document.save("../workspace/cv_adapted.odt")
-    print("\n".join([f"{index}: {text}" for index, text in document.get_indexed_text().items()]))
+
+    print(json.dumps(document.get_indexed_text(), indent=2, ensure_ascii=True))
+
+    # for index, elem in document.get_indexed_elements().items():
+    #     print(index, type(elem)) 
+
