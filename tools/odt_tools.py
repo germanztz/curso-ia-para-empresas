@@ -143,12 +143,7 @@ class OdtDocument:
             bold_style.addElement(bold_props)
             self.document.styles.addElement(bold_style)
         
-        # clear the element childs
-        try:
-            while True:
-                elem.removeChild(elem.firstChild)
-        except:
-            pass
+        new_elem = P(stylename=elem.getAttribute("stylename"))
 
         # Split the text by ** to identify bold sections
         parts = replacement.split('**')
@@ -158,11 +153,14 @@ class OdtDocument:
             if i % 2 == 0:
                 # Normal text
                 if part.strip():  # Only add non-empty text
-                    elem.addElement(Span(text=part))
+                    new_elem.addElement(Span(text=part))
             else:
                 # Bold text
                 if part.strip():  # Only add non-empty text
-                    elem.addElement(Span(stylename="Bold", text=part))
+                    new_elem.addElement(Span(stylename="Bold", text=part))
+
+        elem.parentNode.insertBefore(new_elem,elem)
+        elem.parentNode.removeChild(elem)
         
 if __name__ == "__main__":
 
@@ -170,12 +168,11 @@ if __name__ == "__main__":
     file_path = os.path.dirname(os.path.abspath(__file__))+"/../workspace/cv_original.odt"
     document = OdtDocument(file_path)
 
-    # document.replace({16: "this **is** a **jhon.doe@replaced.com** bold email.",})
-    # print(document.get_indexed_text()[16])
-    # document.save("../workspace/cv_adapted.odt")
+    # print(document.get_indexed_text())
+    # document.replace({215: "Autonomía y retroactividad",})
+    # print(document.get_indexed_text()[215])
 
     print(json.dumps(document.get_indexed_text(), indent=2, ensure_ascii=True))
 
-    # for index, elem in document.get_indexed_elements().items():
-    #     print(index, type(elem)) 
+    # document.save("../workspace/cv_adapted.odt")
 
