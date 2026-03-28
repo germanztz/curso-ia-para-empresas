@@ -1,4 +1,5 @@
 import os
+import re
 from odf import opendocument, teletype
 from odf.text import P, Span
 from odf.style import Style, TextProperties
@@ -121,14 +122,31 @@ class OdtDocument:
             except Exception as e:
                 print(f"Error {e} processing element {index}")
 
-    def _set_text(self, elem, replacement):
+    def _get_markdown_bolds_fixed(self, text: str) -> list[str]:
+        """
+        Fix unbalanced bold markdown formatting in text.
+        Ensures every '**' has a matching '**' to close the bold formatting.
+        """
+        if text.count('**') % 2 == 0: 
+            return text.split('**')
+        words = text.split(' ')
+        for i,word in enumerate(words):
+            if '**' in word:
+                words[i] = f'**{word.replace('**','')}**' 
+        return ' '.join(words).split('**')
+
+    def _set_text(self, elem, text):
         """
         Parse a string with **bold** words and add Span elements to a P element
         
         Args:
             elem (P): The paragraph element to modify
-            replacement (str): Text with **bold** words
+            text (str): Text with **bold** words
         """
+        # remove markdown markers
+        text = re.sub(r'^#+\s+', '', text, flags=re.MULTILINE)
+        text = re.sub(r'^-\s+', '', text, flags=re.MULTILINE)
+
         # Create a style for bold text if it doesn't exist
         bold_style_exists = False
         for style in self.document.styles.getElementsByType(Style):
@@ -146,18 +164,16 @@ class OdtDocument:
         new_elem = P(stylename=elem.getAttribute("stylename"))
 
         # Split the text by ** to identify bold sections
-        parts = replacement.split('**')
+        parts = self._get_markdown_bolds_fixed(text)
         
         # Process parts - alternating between normal and bold text
         for i, part in enumerate(parts):
             if i % 2 == 0:
                 # Normal text
-                if part.strip():  # Only add non-empty text
-                    new_elem.addElement(Span(text=part))
+                new_elem.addElement(Span(text=part))
             else:
                 # Bold text
-                if part.strip():  # Only add non-empty text
-                    new_elem.addElement(Span(stylename="Bold", text=part))
+                new_elem.addElement(Span(stylename="Bold", text=part))
 
         elem.parentNode.insertBefore(new_elem,elem)
         elem.parentNode.removeChild(elem)
